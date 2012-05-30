@@ -16,6 +16,8 @@
 
 package org.springframework.security.extensions.kerberos;
 
+import java.util.Collection;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -23,6 +25,7 @@ import org.springframework.security.authentication.AccountStatusUserDetailsCheck
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -88,7 +91,7 @@ public class KerberosServiceAuthenticationProvider implements
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
         userDetailsChecker.check(userDetails);
         additionalAuthenticationChecks(userDetails, auth);
-        return new KerberosServiceRequestToken(userDetails, userDetails.getAuthorities(), token);
+        return new KerberosServiceRequestToken(userDetails, (Collection<GrantedAuthority>) userDetails.getAuthorities(), token);
     }
 
 
